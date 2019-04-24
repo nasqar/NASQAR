@@ -39,7 +39,7 @@ RUN R -e "install.packages('V8')"
 # shinyngs
 RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(c('SummarizedExperiment','GSEABase'))"
 RUN R -e "install.packages('devtools')"
-RUN R -e "devtools::install_github('pinin4fjords/shinyngs', upgrade_dependencies = FALSE)"
+#RUN R -e "devtools::install_github('pinin4fjords/shinyngs', upgrade_dependencies = FALSE)"
 
 #startapp
 RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(c('limma','edgeR'))"
@@ -63,7 +63,6 @@ RUN pip install umap-learn
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/yan-cri/DEApp/archive/master.zip', destfile = 'deapp.zip'); unzip(zipfile = 'deapp.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/GeneCountMerger/archive/master.zip', destfile = 'genecountmerger.zip'); unzip(zipfile = 'genecountmerger.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
-RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/pinin4fjords/shinyngs/archive/master.zip', destfile = 'shinyngs.zip'); unzip(zipfile = 'shinyngs.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/aghozlane/shaman/archive/master.zip', destfile = 'shaman.zip'); unzip(zipfile = 'shaman.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/jminnier/STARTapp/archive/master.zip', destfile = 'startapp.zip'); unzip(zipfile = 'startapp.zip')"
 
@@ -77,7 +76,6 @@ COPY docker_files/sitemap.xml /srv/shiny-server/
 RUN mv /tmp/DEApp-master /srv/shiny-server/DEApp
 RUN mv /tmp/GeneCountMerger-master /srv/shiny-server/GeneCountMerger
 RUN mv /tmp/deseq2shiny-master /srv/shiny-server/deseq2shiny
-RUN mv /tmp/shinyngs-master /srv/shiny-server/shinyngs
 RUN mv /tmp/shaman-master /srv/shiny-server/shaman
 RUN mv /tmp/STARTapp-master /srv/shiny-server/STARTapp
 
