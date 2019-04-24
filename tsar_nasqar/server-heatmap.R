@@ -1,0 +1,349 @@
+## ==================================================================================== ##
+# START Shiny App for analysis and visualization of transcriptome data.
+# Copyright (C) 2016  Jessica Minnier
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# 
+# You may contact the author of this code, Jessica Minnier, at <minnier@ohsu.edu>
+## ==================================================================================== ##
+
+
+
+## ==================================================================================== ##
+## HEATMAP variables
+## ==================================================================================== ##		
+
+#update list of groups
+observe({
+  print("server-heatmap-update")
+  # browser()
+  data_analyzed = analyzeDataReactive()
+  tmpgroups = data_analyzed$group_names
+  tmpdat = data_analyzed$results
+  tmptests = unique(as.character(tmpdat$test))
+  tmpdatlong = data_analyzed$data_long
+  tmpynames = tmpdatlong%>%select(-unique_id,-sampleid,-group)%>%colnames()
+  if("count"%in%tmpynames) tmpynames = tmpynames[-match("count",tmpynames)]
+  
+  updateRadioButtons(session,'heatmapvaluename', choices=sort(tmpynames,decreasing = TRUE))
+  updateCheckboxGroupInput(session,'view_group_heatmap',
+                           choices=tmpgroups, selected=tmpgroups)
+  updateSelectizeInput(session,'sel_test_heatmap',
+                       choices=tmptests, selected=NULL)
+  updateSelectizeInput(session,"fold_change_groups",
+                       choices=tmpgroups)
+  
+})
+
+
+inputHeatmapSubsetReactive <- reactive({
+  
+  
+  
+  # input$file1 will be NULL initially. After the user selects
+  # and uploads a file, it will be a data frame with 'name',
+  # 'size', 'type', and 'datapath' columns. The 'datapath'
+  # column will contain the local filenames where the data can
+  # be found.
+  
+  validate(
+    need((input$heatmap_subset=="all")|(!is.null(input$heatmap_file)), "Please select a file")
+  )
+  
+  print("inputHeatmapSubsetReactive")
+  
+  inFile <- input$heatmap_file
+  if(!is.null(inFile)) {
+    heatmap_geneids <- unlist(read.csv(inFile$datapath, header=FALSE, stringsAsFactors = FALSE))
+    print('uploaded heatmap gene ids')
+    
+    
+    data_analyzed = analyzeDataReactive()
+    tmpgeneids = data_analyzed$geneids
+    tmpmatch = apply(tmpgeneids,2,function(k) match(heatmap_geneids,k,nomatch = 0))
+    subsetids = tmpgeneids$unique_id[unique(c(tmpmatch))]
+    print(subsetids)
+    
+    validate(need(length(subsetids)>0,"No match found."))
+    
+    return(subsetids)
+  }else{return(NULL)}
+  
+  
+  
+})
+
+# output$filter_fc_ui <- renderUI({
+#   data_analyzed = analyzeDataReactive()
+#   tmpgroups = data_analyzed$group_names
+# 
+#   
+#   list=list(
+#     selectizeInput("fold_change_group", label="Select 2 Groups",
+#                    choices=tmpgroups,
+#                    selected=tmpselect,multiple=TRUE,options = list(maxItems = 2)),
+#     sliderInput("fold_change_range",
+#                 label="Choose Log2Fold Change Filter",min= -20, max=20,value=c(-20,20))
+#   )
+# })
+
+# #withProgress(message = "Drawing heat map, please wait", #detail = "This may take a few moments...",{})
+
+output$heatmap_rna <- renderPlot({
+  if(input$action_heatmaps==0) return()
+  #input$action_heatmaps
+  print("heatmap_rna_renderPlot")
+  myValues$heatmap_path = paste0(tempdir(),'/','heatmap-highres.pdf')
+  
+  if(input$heatmap_width)
+    js$changeWidthHeatmap(input$heatmap_width)
+  
+  data_analyzed = analyzeDataReactive()
+  subsetids = inputHeatmapSubsetReactive()
+  
+  isolate({ #avoid dependency on everything else except action_heatmaps
+    print("drawing heatmap rna")
+    
+    tmp = HeatdatReactive_rna()
+    #return(as.character(nrow(tmp)))
+    tmpnum = ifelse(is.null(tmp),0,nrow(tmp))
+    
+    withProgress(message = paste("Drawing heatmap for", tmpnum, "genes, please wait."),{
+      setProgress(0.5)
+      heatmap_render(
+        data_analyzed=data_analyzed,
+        yname = input$heatmapvaluename,
+        usesubset = input$heatmap_subset=="subset",
+        rowcenter=input$heatmap_rowcenter,
+        subsetids = subsetids,
+        orderby = input$heatmap_order,
+        FDRcut=input$FDRcut,
+        maxgenes=input$maxgenes,
+        view_group=input$view_group_heatmap,
+        sel_test=input$sel_test_heatmap,
+        filter_fdr=input$filter_fdr,
+        filter_maxgene=input$filter_maxgene,
+        #filter_maxgeneN=input$filter_maxgeneN,
+        # filter_cpm=input$filter_cpm,
+        filter_fc=input$filter_fc,
+        fold_change_range=input$fold_change_range,
+        fold_change_groups=input$fold_change_groups,
+        heatmap_rowlabels=input$heatmap_rowlabels,
+        group_replicates=input$group_replicates,
+        remove_geneids=input$remove_geneids)
+    })
+  })#isolate
+})
+
+
+output$heatmapplotly <- renderPlotly({
+  if(input$action_heatmaps==0) return()
+  
+  #input$action_heatmaps
+  print("heatmapplotly")
+  
+  data_analyzed = analyzeDataReactive()
+  subsetids = inputHeatmapSubsetReactive()
+  
+  isolate({ #avoid dependency on everything else except action_heatmaps
+    print("drawing heatmap plotly")
+    withProgress(message = "Drawing interactive heatmap, please wait",{
+      if (names(dev.cur()) != "null device") dev.off()
+      pdf(NULL)
+      p=heatmap_render(
+        data_analyzed=data_analyzed,
+        yname = input$heatmapvaluename,
+        interactive = TRUE,
+        usesubset = input$heatmap_subset=="subset",
+        rowcenter=input$heatmap_rowcenter,
+        subsetids = subsetids,
+        orderby = input$heatmap_order,
+        FDRcut=input$FDRcut,
+        maxgenes=input$maxgenes,
+        view_group=input$view_group_heatmap,
+        sel_test=input$sel_test_heatmap,
+        filter_fdr=input$filter_fdr,
+        filter_maxgene=input$filter_maxgene,
+        #filter_maxgeneN=input$filter_maxgeneN,
+        # filter_cpm=input$filter_cpm,
+        filter_fc=input$filter_fc,
+        fold_change_range=input$fold_change_range,
+        fold_change_groups=input$fold_change_groups,
+        heatmap_rowlabels=input$heatmap_rowlabels)
+      validate(need(!is.null(p),message="These filters result in 0 genes."))
+      p
+    })
+  })#isolate
+})
+
+
+# 
+# observeEvent(  input$action_heatmaps,{
+#   if(input$action_heatmaps==0) return()
+#   
+# 
+#   
+#   print("ggvis heatmap")
+#   
+#   data_analyzed = analyzeDataReactive()
+#   subsetids = inputHeatmapSubsetReactive()
+#   
+#   isolate({
+#     #input$action_heatmaps
+#     #browser()
+#     mydat = heatmap_ggvis_data(
+#       data_analyzed = data_analyzed,
+#       yname = input$heatmapvaluename,
+#       usesubset = input$heatmap_subset=="subset",
+#       subsetids = subsetids,
+#       orderby = input$heatmap_order,
+#       FDRcut=input$FDRcut,
+#       maxgenes=input$maxgenes,
+#       view_group=input$view_group_heatmap,
+#       sel_test=input$sel_test_heatmap,
+#       filter_fdr=input$filter_fdr,
+#       filter_maxgene=input$filter_maxgene,
+#       # filter_cpm=input$filter_cpm,
+#       filter_fc=input$filter_fc,
+#       fold_change_range=input$fold_change_range,
+#       fold_change_groups=input$fold_change_groups)
+#     #print(mydat)
+#     #print(unique(mydat$unique_id))
+#     
+#     
+#     if(!is.null(mydat)) {
+#       
+#       yname = input$heatmapvaluename
+#       all_values2 <- function(x) {
+#         if(is.null(x)) return(NULL)
+#         thisrow <- mydat[mydat$id == x$id,]
+#         thisrow <- thisrow[,c("unique_id","sample",yname,paste0(yname,"_scaled"))]
+#         thisrow[,yname] <- round(thisrow[,yname],3)
+#         paste0(names(thisrow), ": ", format(thisrow), collapse = "<br />")
+#       }
+#       
+#       #browser()
+#       mydat%>%
+#         ggvis(~sample, ~unique_id, fill:=~defcolor,stroke:=~defcolor, key:=~id)%>%
+#         layer_rects(width = band(), height = band()) %>%
+#         scale_nominal("x", padding = 0, points = FALSE) %>%
+#         scale_nominal("y", padding = 0, points = FALSE) %>%
+#         add_tooltip(html=all_values2,on = "hover") %>%
+#         #lb$input()%>%
+#         set_options(width=600,height=1000)%>%bind_shiny("heatmapggvis_rna","heatmapggvisUI_rna")
+#       
+#       if(input$heatmap_subset=="subset") {
+#         tmptext = renderText("The heatmap is filtered based on the uploaded gene ids.")
+#       }else{
+#         if(input$heatmap_order=="significance") {
+#           tmptext = renderText(paste(
+#             "The heatmap is filtered based on the smallest p-values
+#         from the following test:",input$sel_test_heatmap))
+#         }else{ 
+#           tmptext = renderText(paste(
+#             "The heatmap is filtered based on the largest standard deviation of the expression value selected."))
+#         }
+#       }
+#       
+#       output$heatmap_rna_title = tmptext
+#       output$heatmap_rna_title_int = tmptext
+#     }else{
+#       tmptext = renderText("These inputs do not produce data.")
+#       output$heatmap_rna_title = tmptext
+#       output$heatmap_rna_title_int = tmptext
+#     }
+#     
+#   })
+# })
+# 
+
+
+HeatdatReactive_rna <- reactive({
+  if(input$action_heatmaps==0) return()
+  #input$action_heatmaps
+  print("HeatdatReactive_rna")
+  
+  data_analyzed = analyzeDataReactive()
+  subsetids = inputHeatmapSubsetReactive()
+  
+  tmp<- heatmap_data(
+    data_analyzed=data_analyzed,
+    yname = input$heatmapvaluename,
+    usesubset = input$heatmap_subset=="subset",
+    subsetids = subsetids,
+    orderby = input$heatmap_order,
+    FDRcut=input$FDRcut,
+    maxgenes=input$maxgenes,
+    view_group=input$view_group_heatmap,
+    sel_test=input$sel_test_heatmap,
+    filter_by_go=FALSE,
+    filter_fdr=input$filter_fdr,
+    filter_maxgene=input$filter_maxgene,
+    #filter_maxgeneN=input$filter_maxgeneN,
+    filter_cpm=input$filter_cpm,
+    filter_fc=input$filter_fc,
+    fold_change_range=input$fold_change_range,
+    fold_change_groups=input$fold_change_groups,
+    group_filter_range=list(
+      input$cpm_range_BE,
+      input$cpm_range_HE,
+      input$cpm_range_HP,
+      input$cpm_range_SM),
+    fixed_genes_list=NULL)
+  print("HeatdatReactive_rna_finished")
+  return(tmp)
+})
+
+output$numheat <- renderText({
+  if(input$action_heatmaps==0) return()
+  #input$action_heatmaps
+  tmp = HeatdatReactive_rna()
+  #return(as.character(nrow(tmp)))
+  tmpnum = ifelse(is.null(tmp),0,nrow(tmp))
+  paste("Chosen filters result in ",tmpnum, " genes.")
+})
+
+output$heatdat_rna <- DT::renderDataTable({
+  if(input$action_heatmaps==0) return()
+  tmpdat = HeatdatReactive_rna()
+  tmpdat[,sapply(tmpdat,is.numeric)] <- signif(tmpdat[,sapply(tmpdat,is.numeric)],3)
+  DT::datatable(tmpdat)
+},options=list(sDom="ilftpr"))
+
+output$downloadHeatmapData_rna <- downloadHandler(
+  filename = c('heatmap_data_rna.csv'),
+  content = function(file) {
+    write.csv(HeatdatReactive_rna(), file, row.names=FALSE)}
+)
+
+myValues <- reactiveValues()
+output$heatmapHighResAvailable <- reactive({
+  
+  if(is.null(myValues$heatmap_path))
+    return(F)
+  return(file.exists(myValues$heatmap_path))
+})
+outputOptions(output, 'heatmapHighResAvailable', suspendWhenHidden=FALSE)
+
+output$downloadHighResHeatmap <- downloadHandler(
+  filename = c('heatmap_highres.pdf'),
+  content = function(file) {
+    
+    
+    file.copy(myValues$heatmap_path, file)
+    }
+)
+#   fixedGenesReactive <- reactive({
+#     if(input$fix_genes) {tmp = isolate(HeatdatReactive_rna()); return(tmp$gene.id)}else{return(NULL)}
+#   })

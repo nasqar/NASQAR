@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/</loc>
+  <lastmod>2018-09-27T12:38:22+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/GeneCountMerger/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/deseq2shiny/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/SeuratWizard/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/SeuratV3Wizard/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/tsar_nasqar/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/mergeFPKMs/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/createSampleMeta/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/STARTapp/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/DEApp/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://nasqar.abudhabi.nyu.edu/shaman/</loc>
+  <lastmod>2018-10-01T11:17:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+</urlset>
