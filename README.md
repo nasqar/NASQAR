@@ -19,8 +19,7 @@ To run on a different port:
 docker run -p 8083:80 aymanm/nasqarall:nasqar
 ```
 This will run on port 8083
-
-
+---
 NASQAR Custom apps:
 - [SeuratV3Wizard](https://github.com/nasqar/seuratv3wizard)
 - [SeuratWizard](https://github.com/nasqar/SeuratWizard)
