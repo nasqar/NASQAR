@@ -26,6 +26,7 @@ NASQAR Custom apps:
 - [SeuratWizard](https://github.com/nasqar/SeuratWizard)
 - [deseq2shiny](https://github.com/nasqar/deseq2shiny)
 - [GeneCountMerger](https://github.com/nasqar/GeneCountMerger)
+- [ClusterProfShinyORA](https://github.com/nasqar/ClusterProfShinyORA)
 
 Other open-source apps:
 - [STARTapp](https://github.com/jminnier/STARTapp)
