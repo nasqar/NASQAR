@@ -52,9 +52,10 @@ RUN R -e "source('https://raw.githubusercontent.com/aghozlane/shaman/master/Load
 # seuratwizard and seuratv3wizard
 RUN apt-get update && apt-get install -y libhdf5-dev
 RUN R -e "devtools::install_github('nasqar/SeuratWizard', upgrade_dependencies = FALSE)"
+RUN R -e "devtools::install_version(package = 'Seurat', version = package_version('2.3.4'),upgrade_dependencies = F)"
 RUN apt-get update && apt-get install -y libpython-dev python-pip
-RUN R -e "devtools::install_github('nasqar/seuratv3wizard', upgrade_dependencies = FALSE,build = TRUE,subdir = NULL,ref = 'fixfornasqar')"
-RUN R -e "devtools::install_github(lib='/usr/local/lib/R/site-library/SeuratV3Wizard/shiny/SeuratLib',repo = 'satijalab/seurat', ref = 'release/3.0', force=T)"
+RUN R -e "devtools::install_github('nasqar/seuratv3wizard', upgrade_dependencies = FALSE,ref = 'nasqarfix')"
+RUN R -e "devtools::install_github(lib='/usr/local/lib/R/site-library/SeuratV3Wizard/shiny/SeuratLib',repo = 'satijalab/seurat', force=T)"
 RUN R -e "devtools::install_github(repo = 'ChristophH/sctransform')"
 RUN pip install cellbrowser
 RUN pip install umap-learn
@@ -65,6 +66,9 @@ RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/G
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/aghozlane/shaman/archive/master.zip', destfile = 'shaman.zip'); unzip(zipfile = 'shaman.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/jminnier/STARTapp/archive/master.zip', destfile = 'startapp.zip'); unzip(zipfile = 'startapp.zip')"
+
+# clusterprofiler apps
+
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
