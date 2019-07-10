@@ -38,7 +38,7 @@ a, a:hover, a:focus {
 .navbar {
     padding: 15px 10px;
     /* background: #e9ecf7; */
-    background: #6c80ce;
+    background: #495eaf;
     border: none;
     border-radius: 0;
     /* margin-bottom: 40px; */
@@ -488,3 +488,9 @@ figcaption p {
   .fixbtnlink {
     position: unset !important;
   }
+
+  .navbar-subheading {
+    text-align: center;
+    font-weight: 300;
+    color: #fafafa;
+}
