@@ -88,6 +88,12 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="#enrichment">
+                                    <i class="glyphicon glyphicon-link"></i>
+                                    Enrichment
+                                </a>
+                            </li>
+                            <li>
                                 <a href="#metagenomics">
                                     <i class="glyphicon glyphicon-send"></i>
                                     Metagenomics
@@ -140,6 +146,10 @@
                             <h2 class="navbar-heading">
                                     <strong class="abv-color">N</strong>ucleic <strong class="abv-color">A</strong>cid <strong class="abv-color">S</strong>e<strong class="abv-color">Q</strong>uence <strong class="abv-color">A</strong>nalysis <strong class="abv-color">R</strong>esource (<strong  class="abv-color">NASQAR</strong>)
                             </h2>
+
+                            <h4 class="navbar-subheading">
+                                 A web-based platform for High-throughput sequencing data analysis and visualization
+                            </h4>
                         </div>
 
                         
@@ -198,14 +208,15 @@
                                     <h3 class="title-color"><strong>Abstract</strong></h3>
                                     <hr/>
                                     <div class="well">
+                                        <p>
+                                            As high-throughput sequencing applications continue to evolve, the rapid growth in quantity and variety of sequence-based data calls for the development of new software libraries and tools for data analysis and visualization. Often, effective use of these tools requires computational skills beyond those of the average researcher. 
+                                        </p>
+                                        <p>
+                                            To lower this computational barrier, we have created a dynamic web-based platform, <strong>NASQAR</strong>. 
+                                            It provides an intuitive interface that allows users to easily and efficiently explore their data in an interactive way using popular tools for a variety of applications, including <strong>Transcriptome Data Preprocessing, RNAseq Analysis (including Single-cell RNAseq), Metagenomics, and Gene Enrichment</strong>
+                                        </p>
 
-                                        <p>As a “Big data” domain, high throughput genomics analysis can sometimes be <strong>challenging to explore and visualize</strong>. Massive amounts of data/metadata are generated through each level of the analysis “life-cycle”. In addition, it is sometimes necessary to have experience in programming and some computational approaches to further explore the data effectively.</p>
-                                
-                                        <p>Here we present <strong>NASQAR “A web-based portal for High-throughput data analysis & visualization”.</strong> </p>
-                
-                                        <p>It is a collection of in-house developed apps as well as publicly available open source apps. The online resource is meant to provide an intuitive interface for researchers to <strong> upload, analyze, visualize, and explore their data interactively & effectively</strong>. The portal currently offers apps for <strong>Data Preprocessing</strong>, <strong>RNAseq Analysis (Bulk and Single Cell transcriptomics)</strong>, and <strong>Metagenomics</strong>.</p>
                                         
-                                        <p>The portal is publicly available at <a href="http://nasqar.abudhabi.nyu.edu/"><strong>http://nasqar.abudhabi.nyu.edu/</strong></a> . This resource is a collaboration between NYU Abu Dhabi and NYU New York CGSB core bioinformatics teams. The aim is to keep expanding our tools to include comprehensive analysis and visualization suites available to the wider genomics research community.</p>
                 
                                         
                                     </div>
@@ -931,6 +942,47 @@
                     
             </div>
 
+            <div id="enrichment" class="col-md-12 content">
+                    <div class="line"></div>
+
+                    <h2> <strong>Gene Enrichment Tools</strong> </h2>
+                    <hr>
+                    <h4>
+                        ClusterProfShinyGSEA (Gene Set Enrichment Analysis)
+                    </h4>
+                    <div class="well">
+
+                        <ul>
+                            <li><p>A web-based application to perform Gene Set Enrichment Analysis (GSEA) using clusterProfiler and shiny R libraries</p></li>
+                            <li><p><strong>URLs:</strong> <a href="https://github.com/nasqar/ClusterProfShinyGSEA" class="link2" target="_blank"> Github Page</a></p></li>
+                        </ul>
+                        
+
+                        <div class="col-md-6">
+                            <a href="/ClusterProfShinyGSEA" target="_blank" class="button button-pill button-3d button-default button-block button-rounded button-large button-color">ClusterProfShinyGSEA</a>
+                        </div>
+                        <div class="clearBoth"></div>
+
+                    </div>
+
+                    <h4>
+                        ClusterProfShinyORA (Over-Representation Analysis)
+                    </h4>
+                    <div class="well">
+
+                        <ul>
+                            <li><p>A web-based application to perform Over-Representation Analysis (ORA) using clusterProfiler and shiny R libraries</p></li>
+                            <li><p><strong>URLs:</strong> <a href="https://github.com/nasqar/ClusterProfShinyORA" class="link2" target="_blank"> Github Page</a></p></li>
+                        </ul>
+                        
+
+                        <div class="col-md-6">
+                            <a href="/ClusterProfShinyORA" target="_blank" class="button button-pill button-3d button-default button-block button-rounded button-large button-color">ClusterProfShinyORA</a>
+                        </div>
+                        <div class="clearBoth"></div>
+
+                    </div>
+            </div>
 
 
             <div id="metagenomics" class="col-md-12 content">
