@@ -22,10 +22,11 @@ This will run on port 8083
 
 ---
 NASQAR Custom apps:
-- [SeuratV3Wizard](https://github.com/nasqar/seuratv3wizard)
-- [SeuratWizard](https://github.com/nasqar/SeuratWizard)
-- [deseq2shiny](https://github.com/nasqar/deseq2shiny)
-- [GeneCountMerger](https://github.com/nasqar/GeneCountMerger)
+- [SeuratV3Wizard (scRNA)](https://github.com/nasqar/seuratv3wizard)
+- [SeuratWizard (scRNA)](https://github.com/nasqar/SeuratWizard)
+- [deseq2shiny (Bulk RNA)](https://github.com/nasqar/deseq2shiny)
+- [GeneCountMerger (Pre-processing)](https://github.com/nasqar/GeneCountMerger)
+- [ClusterProfShinyGSEA](https://github.com/nasqar/ClusterProfShinyGSEA)
 - [ClusterProfShinyORA](https://github.com/nasqar/ClusterProfShinyORA)
 
 Other open-source apps:
