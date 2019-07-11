@@ -26,8 +26,8 @@ NASQAR Custom apps:
 - [SeuratWizard (scRNA)](https://github.com/nasqar/SeuratWizard)
 - [deseq2shiny (Bulk RNA)](https://github.com/nasqar/deseq2shiny)
 - [GeneCountMerger (Pre-processing)](https://github.com/nasqar/GeneCountMerger)
-- [ClusterProfShinyGSEA](https://github.com/nasqar/ClusterProfShinyGSEA)
-- [ClusterProfShinyORA](https://github.com/nasqar/ClusterProfShinyORA)
+- [ClusterProfShinyGSEA (Enrichment)](https://github.com/nasqar/ClusterProfShinyGSEA)
+- [ClusterProfShinyORA (Enrichment)](https://github.com/nasqar/ClusterProfShinyORA)
 
 Other open-source apps:
 - [STARTapp](https://github.com/jminnier/STARTapp)
