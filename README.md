@@ -21,6 +21,7 @@ docker run -p 8083:80 aymanm/nasqarall:nasqar
 This will run on port 8083
 
 ---
+### Apps included in NASQAR
 NASQAR Custom apps:
 - [SeuratV3Wizard (scRNA)](https://github.com/nasqar/seuratv3wizard)
 - [SeuratWizard (scRNA)](https://github.com/nasqar/SeuratWizard)
