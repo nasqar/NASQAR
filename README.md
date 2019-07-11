@@ -2,10 +2,10 @@
 
 ## NASQAR (Nucleic Acid SeQuence Analysis Resource): 
 ### A web-based platform for High-throughput sequencing data analysis and visualization
-- This repo contains the source code for the NASQAR homepage (http://nasqar.abudhabi.nyu.edu/)
+- This repo contains the source code for the NASQAR homepage http://nasqar.abudhabi.nyu.edu/
 - Below are links to github repos for the apps contained in NASQAR
 - The Dockerfile can be used to build the latest image of NASQAR
-- The latest Docker image for nasqar is available via DockerHub aymanm/nasqarall:nasqar
+- The latest Docker image for nasqar is available via DockerHub https://hub.docker.com/r/aymanm/nasqarall
 
 ### Run using docker (Recommended):
 Make sure Docker (version >= 17.03.0-ce) is installed.
