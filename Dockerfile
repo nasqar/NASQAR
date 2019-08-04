@@ -29,20 +29,20 @@ RUN R -e "install.packages(c('shiny', 'shinyBS', 'readr', 'shinyjs','sodium','uu
 
 # add packages for deseq2
 RUN R -e "install.packages(c('shinydashboard', 'shinycssloaders', 'DT', 'rhandsontable','RColorBrewer','pheatmap','ggplot2','ggthemes', 'plotly','NMF'), repos='http://cran.rstudio.com/')"
-RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite('BiocParallel')"
+RUN R -e "install.packages('BiocManager');  BiocManager::install('BiocParallel')"
 
-RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(c('DESeq2'))"
+RUN R -e "BiocManager::install(c('DESeq2'))"
 RUN R -e "install.packages('https://bioconductor.org/packages/3.6/bioc/src/contrib/Archive/DESeq2/DESeq2_1.18.0.tar.gz', repos = NULL, type='source')"
 RUN R -e "install.packages('V8')"
 
 
 # shinyngs
-RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(c('SummarizedExperiment','GSEABase'))"
+RUN R -e "BiocManager::install(c('SummarizedExperiment','GSEABase'))"
 RUN R -e "install.packages('devtools')"
 #RUN R -e "devtools::install_github('pinin4fjords/shinyngs', upgrade_dependencies = FALSE)"
 
 #startapp
-RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(c('limma','edgeR'))"
+RUN R -e "BiocManager::install(c('limma','edgeR'))"
 RUN R -e "install.packages(c('reshape2','gplots','ggvis','dplyr','tidyr','scales','heatmaply','ggrepel','colourpicker'), repos='http://cran.rstudio.com/')"
 
 # shaman
@@ -66,9 +66,14 @@ RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/G
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/aghozlane/shaman/archive/master.zip', destfile = 'shaman.zip'); unzip(zipfile = 'shaman.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/jminnier/STARTapp/archive/master.zip', destfile = 'startapp.zip'); unzip(zipfile = 'startapp.zip')"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyGSEA/archive/master.zip', destfile = 'clustprof.zip'); unzip(zipfile = 'clustprof.zip')"
 
 # clusterprofiler apps
-
+RUN R -e "BiocManager::install(c('clusterProfiler','DOSE','GOplot','enrichplot','pathview'))"
+RUN R -e "BiocInstaller::biocLite(c('org.Hs.eg.db','org.Mm.eg.db','org.Rn.eg.db','org.Sc.sgd.db','org.Dm.eg.db','org.At.tair.db','org.Dr.eg.db','org.Bt.eg.db','org.Ce.eg.db','org.Gg.eg.db','org.Cf.eg.db','org.Ss.eg.db','org.Mmu.eg.db','org.EcK12.eg.db','org.Xl.eg.db','org.Pt.eg.db','org.Ag.eg.db','org.Pf.plasmo.db','org.EcSakai.eg.db'))"
+#RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyGSEA/archive/master.zip', destfile = 'clustprofgsea.zip'); unzip(zipfile = 'clustprofgsea.zip')"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyORA/archive/master.zip', destfile = 'clustprofora.zip'); unzip(zipfile = 'clustprofora.zip')"
+RUN R -e "install.packages('wordcloud2')"
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
@@ -82,6 +87,8 @@ RUN mv /tmp/GeneCountMerger-master /srv/shiny-server/GeneCountMerger
 RUN mv /tmp/deseq2shiny-master /srv/shiny-server/deseq2shiny
 RUN mv /tmp/shaman-master /srv/shiny-server/shaman
 RUN mv /tmp/STARTapp-master /srv/shiny-server/STARTapp
+RUN mv /tmp/ClusterProfShinyGSEA-master /srv/shiny-server/ClusterProfShinyGSEA
+RUN mv /tmp/ClusterProfShinyORA-master /srv/shiny-server/ClusterProfShinyORA
 
 RUN chown -R shiny:shiny /srv/shiny-server
 RUN chmod -R 777 /usr/local/lib/R/*/SeuratV3Wizard/shiny/www
