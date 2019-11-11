@@ -1,5 +1,5 @@
 # Install R version 3.5
-FROM r-base:3.5.0
+FROM r-base:3.6.0
 
 # Install Ubuntu packages
 RUN apt-get update && apt-get install -y \
@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libsodium-dev \
     libxml2-dev \
-    libv8-3.14-dev
+    libv8-dev
 
 # Download and install ShinyServer (latest version)
 RUN wget --no-verbose https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/VERSION -O "version.txt" && \
@@ -52,13 +52,14 @@ RUN R -e "source('https://raw.githubusercontent.com/aghozlane/shaman/master/Load
 # seuratwizard and seuratv3wizard
 RUN apt-get update && apt-get install -y libhdf5-dev
 RUN R -e "devtools::install_github('nasqar/SeuratWizard', upgrade_dependencies = FALSE)"
-RUN R -e "devtools::install_version(package = 'Seurat', version = package_version('2.3.4'),upgrade_dependencies = F)"
+#RUN R -e "devtools::install_version(package = 'Seurat', version = package_version('2.3.4'), upgrade='never',repos='https://cloud.r-project.org')"
+RUN R -e "source('https://z.umn.edu/archived-seurat')"
 RUN apt-get update && apt-get install -y libpython-dev python-pip
-RUN R -e "devtools::install_github('nasqar/seuratv3wizard', upgrade_dependencies = FALSE,ref = 'nasqarfix')"
-RUN R -e "devtools::install_github(lib='/usr/local/lib/R/site-library/SeuratV3Wizard/shiny/SeuratLib',repo = 'satijalab/seurat', force=T)"
-RUN R -e "devtools::install_github(repo = 'ChristophH/sctransform')"
 RUN pip install cellbrowser
 RUN pip install umap-learn
+RUN R -e "devtools::install_github('nasqar/seuratv3wizard', upgrade_dependencies = FALSE,ref = 'nasqarfix')"
+RUN R -e "devtools::install_github(lib='/usr/local/lib/R/site-library/SeuratV3Wizard/shiny/SeuratLib',repo = 'satijalab/seurat', force=T)"
+RUN R -e "devtools::install_github(repo = 'ChristophH/sctransform',repos=NULL)"
 
 # download apps
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/yan-cri/DEApp/archive/master.zip', destfile = 'deapp.zip'); unzip(zipfile = 'deapp.zip')"
@@ -66,14 +67,17 @@ RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/G
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/aghozlane/shaman/archive/master.zip', destfile = 'shaman.zip'); unzip(zipfile = 'shaman.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/jminnier/STARTapp/archive/master.zip', destfile = 'startapp.zip'); unzip(zipfile = 'startapp.zip')"
-RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyGSEA/archive/master.zip', destfile = 'clustprof.zip'); unzip(zipfile = 'clustprof.zip')"
 
 # clusterprofiler apps
 RUN R -e "BiocManager::install(c('clusterProfiler','DOSE','GOplot','enrichplot','pathview'))"
-RUN R -e "BiocInstaller::biocLite(c('org.Hs.eg.db','org.Mm.eg.db','org.Rn.eg.db','org.Sc.sgd.db','org.Dm.eg.db','org.At.tair.db','org.Dr.eg.db','org.Bt.eg.db','org.Ce.eg.db','org.Gg.eg.db','org.Cf.eg.db','org.Ss.eg.db','org.Mmu.eg.db','org.EcK12.eg.db','org.Xl.eg.db','org.Pt.eg.db','org.Ag.eg.db','org.Pf.plasmo.db','org.EcSakai.eg.db'))"
-#RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyGSEA/archive/master.zip', destfile = 'clustprofgsea.zip'); unzip(zipfile = 'clustprofgsea.zip')"
-RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyORA/archive/master.zip', destfile = 'clustprofora.zip'); unzip(zipfile = 'clustprofora.zip')"
+RUN R -e "BiocManager::install(c('org.Hs.eg.db','org.Mm.eg.db','org.Rn.eg.db','org.Sc.sgd.db','org.Dm.eg.db','org.At.tair.db','org.Dr.eg.db','org.Bt.eg.db','org.Ce.eg.db','org.Gg.eg.db','org.Cf.eg.db','org.Ss.eg.db','org.Mmu.eg.db','org.EcK12.eg.db','org.Xl.eg.db','org.Pt.eg.db','org.Ag.eg.db','org.Pf.plasmo.db','org.EcSakai.eg.db'))"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyORA/archive/master.zip', destfile = 'clustora.zip'); unzip(zipfile = 'clustora.zip')"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyGSEA/archive/master.zip', destfile = 'clustprofgsea.zip'); unzip(zipfile = 'clustprofgsea.zip')"
 RUN R -e "install.packages('wordcloud2')"
+
+# fix datatables issue by downgrading shiny and htmltools
+RUN R -e "devtools::install_version('htmltools', version = '0.3.6', repos = 'http://cran.us.r-project.org')"
+RUN R -e "devtools::install_version(package = 'shiny', version = package_version('1.3.2'),upgrade=F, repos='https://cran.r-project.org/', dependencies = T)"
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
