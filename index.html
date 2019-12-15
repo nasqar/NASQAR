@@ -183,24 +183,11 @@
                                                     <li><a class="link2 categories" href="#metagenomics">Metagenomics</a></li>
                                                     <li><a class="link2 categories" href="#variant">Variant analysis</a></li>
                                     </ul> -->
-                                    <p>Scroll down for more apps and details</p>
-                                    <hr/> 
-                                    <!-- <p style="color:palevioletred;">
-                                        <em>
-                                                <strong>NOTE: </strong>Currently this portal is limited in resources, so if you experience delays or irresponsiveness in any app, just wait and do NOT refresh the page</p>
-
-                                        </em>
-                                        
+                                    <hr/>
+                                    <h3 class="title-color"><strong>GitHub</strong></h3>
+                                    <p>
+                                        <a href="https://github.com/nasqar/nasqar">https://github.com/nasqar/nasqar</a>
                                     </p>
-                                    <p style="color:palevioletred;">
-                                        <em>
-                                                We are working on upgrading backend resources, please check back soon.
-                                        </em>
-                                        
-                                    </p> -->
-                                    
-                                   
-
                                         
 
                                 </div>
@@ -223,6 +210,38 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <h3 class="title-color"><strong>Data Privacy</strong></h3>
+                                    <hr/>
+                                    <p>
+                                        Although data uploaded for analysis on the online instance of NASQAR (at <a href="http://nasqar.abudhabi.nyu.edu/" target="_blank">http://nasqar.abudhabi.nyu.edu/</a>) is 
+                                        by default discarded after a users session ends, this does not guarantee total data privacy. 
+                                        In cases where data privacy is a concern (e.g. patient or pilot data), it is recommended that 
+                                        NASQAR is deployed on a local intranet for private users, or on a personal computer. 
+                                        A Docker image of NASQAR is publicly available through <a href="https://hub.docker.com/r/aymanm/nasqarall" target="_blank">DockerHub</a> and can be used to deploy 
+                                        the application seamlessly on any system with Docker installed, whether a local computer, 
+                                        a public internet  server,  or  a  private  server  (e.g.  research  institutions  intranet). 
+                                    </p>
+                            </div>
+                            <div class="col-md-12">
+                                <h3 class="title-color"><strong>Run NASQAR on local computer/server (Docker)</strong></h3>
+                                <hr/>
+                                <p>
+                                    <strong>Prerequisite:</strong> <a href="https://docs.docker.com/v17.09/engine/installation/" target="_blank">Docker</a> (version >= 17.03.0-ce)
+                                </p>
+                                <p>
+                                    To run NASQAR locally on port 80, use the following docker command:
+                                </p>
+                                <div class="well">
+                                    <p>docker run -p 80:80 aymanm/nasqarall:nasqar</p>
+                                </div>
+                                <p>
+                                    To run NASQAR locally on a different port (e.g. port 8083), use:
+                                </p>
+                                <div class="well">
+                                    <p>docker run -p 8083:80 aymanm/nasqarall:nasqar</p>
+                                </div>
+                        </div>
                                 <div class="col-md-12">
                                         <h3 class="title-color"><strong>Apps</strong></h3>
                                         <hr/>
