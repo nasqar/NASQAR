@@ -70,9 +70,30 @@
                         </ul>-->
                     </li>
                     <li>
+                        <a href="#dataprivacy">
+                            <!--<i class="glyphicon glyphicon-home"></i>-->
+                            Data Privacy
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#installrun">
+                            Run/Install
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#apps">
+                            Online Apps
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#citation">
+                            Citation
+                        </a>
+                    </li>
+                    <li>
                         <a href="#appSubmenu" data-toggle="collapse" aria-expanded="true">
                             <!--<i class="glyphicon glyphicon-home"></i>-->
-                            Categories
+                            Categories/Details
                         </a>
                         <ul class="collapse in list-unstyled" id="appSubmenu">
 
@@ -100,12 +121,12 @@
                                     Metagenomics
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="#variant">
                                     <i class="glyphicon glyphicon-paperclip"></i>
                                     Variant Disc
                                 </a>
-                            </li>
+                            </li> -->
 
                         </ul>
                     </li>
@@ -210,7 +231,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-12" id="dataprivacy">
                                     <h3 class="title-color"><strong>Data Privacy</strong></h3>
                                     <hr/>
                                     <p>
@@ -223,7 +244,7 @@
                                         a public internet  server,  or  a  private  server  (e.g.  research  institutions  intranet). 
                                     </p>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12" id="installrun">
                                 <h3 class="title-color"><strong>Run NASQAR on local computer/server (Docker)</strong></h3>
                                 <hr/>
                                 <p>
@@ -241,8 +262,12 @@
                                 <div class="well">
                                     <p>docker run -p 8083:80 aymanm/nasqarall:nasqar</p>
                                 </div>
+
+                                <p>
+                                    Access via web-browser on http://localhost/ or http://localhost:8083/ depending on port number used. 
+                                </p>
                         </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12" id="apps">
                                         <h3 class="title-color"><strong>Apps</strong></h3>
                                         <hr/>
                                 </div>
@@ -679,7 +704,7 @@
 
 
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" id="citation">
                                             <hr>
                                             <h3 class="title-color"><strong>Citation</strong></h3>
                                             <p>
@@ -890,6 +915,29 @@
                     <br>
                     <h3> <strong><em>Bulk RNA</em></strong> </h3>
                     <br>
+
+                    <h4>
+                        DESeq2 Shiny
+                    </h4>
+
+
+
+
+                    <div class="well">
+
+                        <ul>
+                            <li><p>An interactive web application for differential expression analysis based on DESeq2</p></li>
+                            <li><p> <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2:</a> an R package for Differential gene expression analysis based on the negative binomial distribution.</p></li>
+                            <li><p><strong>URLs:</strong> <a href="https://github.com/nasqar/deseq2shiny" class="link2" target="_blank"> Github Page</a></p></li>
+                        </ul>
+                        
+
+                        <div class="col-md-6">
+                            <a href="/deseq2shiny" target="_blank" class="button button-pill button-3d button-default button-block button-rounded button-large button-color">DESeq2 Shiny</a>
+                        </div>
+                        <div class="clearBoth"></div>
+
+                    </div>
                     
                     <h4>
                         START App: RNAseq
@@ -898,7 +946,7 @@
 
                         <ul>
                             <li><p><a href="http://satijalab.org/seurat/" target="_blank" class="link2">The START App</a>: R Shiny Transcriptome Analysis Resource Tool</p></li>
-                            <li><p>a web-based RNAseq analysis and visualization resource</p></li>
+                            <li><p>A web-based RNAseq analysis and visualization resource using edgeR and limma-voom</p></li>
                             <li><p><strong>URLs:</strong> <a href="https://github.com/jminnier/STARTapp" class="link2" target="_blank"> Github Page</a></p></li>
                         </ul>
                         
@@ -918,44 +966,17 @@
 
 
 
-                    <h4>
-                        DESeq2 Shiny
-                    </h4>
-
-
-
-
-                    <div class="well">
-
-                        <ul>
-                            <li><p>DESeq2 Shiny: an interactive web application for differential expression analysis based on DESeq2</p></li>
-                            <li><p><strong>URLs:</strong> <a href="https://github.com/nasqar/deseq2shiny" class="link2" target="_blank"> Github Page</a></p></li>
-                        </ul>
-                        
-
-                        <div class="col-md-6">
-                            <a href="/deseq2shiny" target="_blank" class="button button-pill button-3d button-default button-block button-rounded button-large button-color">DESeq2 Shiny</a>
-                        </div>
-                        <div class="clearBoth"></div>
-
-                    </div>
-
-
-
-
-
 
                     <h4>
                         DEApp
                     </h4>
 
 
-
-
                     <div class="well">
 
                         <ul>
                             <li><p>DEApp: an interactive web application of differential expression analysis</p></li>
+                            <li><p>This app uses edgeR, limma-voom, and DESeq2</p></li>
                             <li><p><strong>URLs:</strong> <a href="https://github.com/yan-cri/DEApp" class="link2" target="_blank"> Github Page</a></p></li>
                         </ul>
                         
@@ -999,6 +1020,7 @@
 
                         <ul>
                             <li><p>A web-based application to perform Gene Set Enrichment Analysis (GSEA) using clusterProfiler and shiny R libraries</p></li>
+                            <li><p>This is based on <a href="https://guangchuangyu.github.io/software/clusterProfiler/">clusterProfiler</a> R package</p></li>
                             <li><p><strong>URLs:</strong> <a href="https://github.com/nasqar/ClusterProfShinyGSEA" class="link2" target="_blank"> Github Page</a></p></li>
                         </ul>
                         
@@ -1017,6 +1039,7 @@
 
                         <ul>
                             <li><p>A web-based application to perform Over-Representation Analysis (ORA) using clusterProfiler and shiny R libraries</p></li>
+                            <li><p>This is based on <a href="https://guangchuangyu.github.io/software/clusterProfiler/">clusterProfiler</a> R package</p></li>
                             <li><p><strong>URLs:</strong> <a href="https://github.com/nasqar/ClusterProfShinyORA" class="link2" target="_blank"> Github Page</a></p></li>
                         </ul>
                         
@@ -1042,6 +1065,7 @@
 
                         <ul>
                             <li><p>SHAMAN is a SHiny application for Metagenomic ANalysis including the normalization, the differential analysis and mutiple visualization</p></li>
+                            <li><p>Main packages: <a href="https://www.ncbi.nlm.nih.gov/pubmed/27781170">VSEARCH</a>, <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a></p></li>
                             <li><p><strong>URLs:</strong> <a href="https://github.com/aghozlane/shaman" class="link2" target="_blank"> Github Page</a></p></li>
                         </ul>
                         
@@ -1054,7 +1078,7 @@
                     </div>
             </div>
 
-            <div id="variant" class="col-md-12 content">
+            <!-- <div id="variant" class="col-md-12 content">
                     <div class="line"></div>
 
                     <h2> <strong>Variant Discovery Tools</strong> </h2>
@@ -1062,7 +1086,7 @@
                     <h4>
                         <em>None</em>
                     </h4>
-            </div>
+            </div> -->
 
 
 
