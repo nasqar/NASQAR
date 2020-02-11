@@ -5,12 +5,11 @@ orbs:
 
 
 jobs:
-  # Docker build steps
+  # Build the docker image for nasqar
   build:
     executor: docker/machine
     steps:
       - checkout
-#      - docker/check
       - docker/build:
           image: aymanm/nasqarall
       - run:
