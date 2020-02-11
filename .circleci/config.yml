@@ -10,7 +10,7 @@ jobs:
     executor: docker/docker
     steps:
       - checkout
-      - docker/check
+#      - docker/check
       - docker/build:
           image: aymanm/nasqarall
       - run:
