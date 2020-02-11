@@ -28,13 +28,12 @@ jobs:
 
 workflows:
   version: 2
-  docker:
+  build-deploy:
     jobs:
-      - build
-      - push
-          requires:
-            - build
+      - build:
           filters:
             branches:
               only: master
-
+      - push:
+          requires:
+            - build
