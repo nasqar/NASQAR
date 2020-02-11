@@ -6,6 +6,7 @@ FROM rocker/shiny:3.6.1
 # Install Ubuntu packages
 RUN apt-get update && apt-get install -y \
     sudo \
+    libv8-dev \
     libssl-dev
 
 # Switching to rocker so we don't need this
