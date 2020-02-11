@@ -27,6 +27,7 @@ jobs:
             echo "Digest is: $(</tmp/digest.txt)"
 
 workflows:
+  version: 2
   docker:
     jobs:
       - build
