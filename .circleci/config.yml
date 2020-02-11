@@ -17,6 +17,8 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
   push:
+    requires:
+      - build
     executor: docker/docker
     steps:
       - docker/push:
@@ -31,8 +33,6 @@ workflows:
     jobs:
       - build
       - push
-        requires:
-          - build
         filters:
           branches:
             only: master
