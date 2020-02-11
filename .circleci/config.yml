@@ -7,7 +7,6 @@ orbs:
 jobs:
   # Docker build steps
   build:
-    executor: docker/docker
     steps:
       - checkout
 #      - docker/check
@@ -17,7 +16,6 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
   push:
-    executor: docker/docker
     steps:
       - setup_remote_docker
       - docker/push:
