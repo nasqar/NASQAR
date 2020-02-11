@@ -19,6 +19,9 @@ jobs:
   push:
     requires:
       - build
+    filters:
+      branches:
+        only: master
     executor: docker/docker
     steps:
       - docker/push:
@@ -33,7 +36,4 @@ workflows:
     jobs:
       - build
       - push
-        filters:
-          branches:
-            only: master
 
