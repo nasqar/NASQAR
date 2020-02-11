@@ -5,7 +5,8 @@ FROM rocker/shiny:3.6.1
 
 # Install Ubuntu packages
 RUN apt-get update && apt-get install -y \
-    sudo
+    sudo \
+    libssl-dev
 
 # Switching to rocker so we don't need this
 # Download and install ShinyServer (latest version)
@@ -104,4 +105,4 @@ RUN chmod -R 777 /srv/shiny-server/tsar_nasqar
 # Make the ShinyApp available at port 80
 EXPOSE 80
 
-CMD ["/usr/bin/shiny-server.sh"]
+#CMD ["/usr/bin/shiny-server.sh"]
