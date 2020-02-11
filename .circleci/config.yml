@@ -9,7 +9,6 @@ jobs:
   build:
     executor: docker/docker
     steps:
-      - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
@@ -20,6 +19,7 @@ jobs:
   push:
     executor: docker/docker
     steps:
+      - setup_remote_docker
       - docker/push:
           digest-path: /tmp/digest.txt
           image: aymanm/nasqarall
