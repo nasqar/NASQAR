@@ -25,6 +25,17 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
+  push_with_tags:
+    executor: docker/machine
+    steps:
+      - setup_remote_docker
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: aymanm/nasqarall
+          tag: 'latest,nasqarall'
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
 
 
 workflows:
@@ -33,6 +44,12 @@ workflows:
     jobs:
       - build
       - push:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - push_with_tags:
           requires:
             - build
           filters:
