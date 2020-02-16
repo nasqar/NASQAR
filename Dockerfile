@@ -1,26 +1,22 @@
 # Install R version 3.5
-FROM r-base:3.6.0
+#FROM r-base:3.5.0
+#FROM r-base:3.6.2
+FROM rocker/shiny:3.6.1
 
 # Install Ubuntu packages
 RUN apt-get update && apt-get install -y \
     sudo \
-    gdebi-core \
-    pandoc \
-    pandoc-citeproc \
-    libcurl4-gnutls-dev \
-    libcairo2-dev/unstable \
-    libxt-dev \
-    libssl-dev \
     libsodium-dev \
-    libxml2-dev \
-    libv8-dev
+    libv8-dev \
+    libssl-dev
 
+# Switching to rocker so we don't need this
 # Download and install ShinyServer (latest version)
-RUN wget --no-verbose https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/VERSION -O "version.txt" && \
-    VERSION=$(cat version.txt)  && \
-    wget --no-verbose "https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/shiny-server-$VERSION-amd64.deb" -O ss-latest.deb && \
-    gdebi -n ss-latest.deb && \
-    rm -f version.txt ss-latest.deb
+#RUN wget --no-verbose https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/VERSION -O "version.txt" && \
+#    VERSION=$(cat version.txt)  && \
+#    wget --no-verbose "https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/shiny-server-$VERSION-amd64.deb" -O ss-latest.deb && \
+#    gdebi -n ss-latest.deb && \
+#    rm -f version.txt ss-latest.deb
 
 # Install R packages that are required
 # add packages for CountMerger
@@ -32,7 +28,7 @@ RUN R -e "install.packages(c('shinydashboard', 'shinycssloaders', 'DT', 'rhandso
 RUN R -e "install.packages('BiocManager');  BiocManager::install('BiocParallel')"
 
 RUN R -e "BiocManager::install(c('DESeq2'))"
-RUN R -e "install.packages('https://bioconductor.org/packages/3.6/bioc/src/contrib/Archive/DESeq2/DESeq2_1.18.0.tar.gz', repos = NULL, type='source')"
+#RUN R -e "install.packages('https://bioconductor.org/packages/3.6/bioc/src/contrib/Archive/DESeq2/DESeq2_1.18.0.tar.gz', repos = NULL, type='source')"
 RUN R -e "install.packages('V8')"
 
 
@@ -47,24 +43,12 @@ RUN R -e "install.packages(c('reshape2','gplots','ggvis','dplyr','tidyr','scales
 
 # shaman
 RUN apt-get update && apt-get install -y libmagick++-dev
+RUN R -e "BiocManager::install(c('biomformat'))"
 RUN R -e "source('https://raw.githubusercontent.com/aghozlane/shaman/master/LoadPackages.R')"
-
-# seuratwizard and seuratv3wizard
-RUN apt-get update && apt-get install -y libhdf5-dev
-RUN R -e "devtools::install_github('nasqar/SeuratWizard', upgrade_dependencies = FALSE)"
-#RUN R -e "devtools::install_version(package = 'Seurat', version = package_version('2.3.4'), upgrade='never',repos='https://cloud.r-project.org')"
-RUN R -e "source('https://z.umn.edu/archived-seurat')"
-RUN apt-get update && apt-get install -y libpython-dev python-pip
-RUN pip install cellbrowser
-RUN pip install umap-learn
-RUN R -e "devtools::install_github('nasqar/seuratv3wizard', upgrade_dependencies = FALSE,ref = 'nasqarfix')"
-RUN R -e "devtools::install_github(lib='/usr/local/lib/R/site-library/SeuratV3Wizard/shiny/SeuratLib',repo = 'satijalab/seurat', force=T)"
-RUN R -e "devtools::install_github(repo = 'ChristophH/sctransform',repos=NULL)"
 
 # download apps
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/yan-cri/DEApp/archive/master.zip', destfile = 'deapp.zip'); unzip(zipfile = 'deapp.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/GeneCountMerger/archive/master.zip', destfile = 'genecountmerger.zip'); unzip(zipfile = 'genecountmerger.zip')"
-RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/aghozlane/shaman/archive/master.zip', destfile = 'shaman.zip'); unzip(zipfile = 'shaman.zip')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/jminnier/STARTapp/archive/master.zip', destfile = 'startapp.zip'); unzip(zipfile = 'startapp.zip')"
 
@@ -75,9 +59,27 @@ RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/C
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyGSEA/archive/master.zip', destfile = 'clustprofgsea.zip'); unzip(zipfile = 'clustprofgsea.zip')"
 RUN R -e "install.packages('wordcloud2')"
 
+
+# seuratwizard and seuratv3wizard
+RUN apt-get update && apt-get install -y libhdf5-dev
+RUN R -e "BiocManager::install(c('multtest'))"
+RUN R -e "devtools::install_github('nasqar/SeuratWizard')"
+#RUN R -e "devtools::install_version(package = 'Seurat', version = package_version('2.3.4'), upgrade='never',repos='https://cloud.r-project.org')"
+RUN apt-get update && apt-get install -y libpython-dev python-pip
+RUN R -e "source('https://z.umn.edu/archived-seurat')"
+RUN R -e "devtools::install_github('nasqar/seuratv3wizard', upgrade_dependencies = FALSE,ref = 'nasqarfix',repos=NULL)"
+RUN R -e "devtools::install_github(lib='/usr/local/lib/R/site-library/SeuratV3Wizard/shiny/SeuratLib',repo = 'satijalab/seurat', force=T)"
+RUN R -e "devtools::install_github(repo = 'ChristophH/sctransform',repos=NULL)"
+RUN pip install cellbrowser
+RUN pip install umap-learn
+
 # fix datatables issue by downgrading shiny and htmltools
 RUN R -e "devtools::install_version('htmltools', version = '0.3.6', repos = 'http://cran.us.r-project.org')"
 RUN R -e "devtools::install_version(package = 'shiny', version = package_version('1.3.2'),upgrade=F, repos='https://cran.r-project.org/', dependencies = T)"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
+
+RUN R -e "install.packages('janitor')"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/GeneCountMerger/archive/master.zip', destfile = 'genecountmerger.zip'); unzip(zipfile = 'genecountmerger.zip')"
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
@@ -85,6 +87,8 @@ COPY . /srv/shiny-server
 # Copy further configuration files into the Docker image
 COPY docker_files/shiny-server.sh /usr/bin/shiny-server.sh
 COPY docker_files/sitemap.xml /srv/shiny-server/
+RUN R -e "devtools::install_github('andrewsali/shinycssloaders@0.2.0')"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyGSEA/archive/master.zip', destfile = 'clustprofgsea.zip'); unzip(zipfile = 'clustprofgsea.zip')"
 
 RUN mv /tmp/DEApp-master /srv/shiny-server/DEApp
 RUN mv /tmp/GeneCountMerger-master /srv/shiny-server/GeneCountMerger
@@ -94,6 +98,7 @@ RUN mv /tmp/STARTapp-master /srv/shiny-server/STARTapp
 RUN mv /tmp/ClusterProfShinyGSEA-master /srv/shiny-server/ClusterProfShinyGSEA
 RUN mv /tmp/ClusterProfShinyORA-master /srv/shiny-server/ClusterProfShinyORA
 
+RUN sed -i '/options(repos = BiocInstaller::biocinstallRepos())/d' /srv/shiny-server/STARTapp/server.R
 RUN chown -R shiny:shiny /srv/shiny-server
 RUN chmod -R 777 /usr/local/lib/R/*/SeuratV3Wizard/shiny/www
 RUN chmod -R 777 /srv/shiny-server/tsar_nasqar
