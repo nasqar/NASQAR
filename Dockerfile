@@ -43,6 +43,7 @@ RUN R -e "install.packages(c('reshape2','gplots','ggvis','dplyr','tidyr','scales
 
 # shaman
 RUN apt-get update && apt-get install -y libmagick++-dev
+RUN R -e "BiocManager::install(c('biomformat'))"
 RUN R -e "source('https://raw.githubusercontent.com/aghozlane/shaman/master/LoadPackages.R')"
 
 # download apps
