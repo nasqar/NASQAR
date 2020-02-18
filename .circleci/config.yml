@@ -37,6 +37,8 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
   terraform_plan:
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - run:
           command: |
