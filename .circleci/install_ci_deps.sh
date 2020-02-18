@@ -6,7 +6,7 @@ TERRAFORM_VERSION=0.12.20
 KUBECTL_VERSION=1.17.0
 
 # add dependencies to install cloud tools
-apt-get install -y curl openssl jq
+sudo apt-get install -y curl openssl jq
 
 # install terraform
 curl "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -o "/opt/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
