@@ -43,7 +43,7 @@ jobs:
       - checkout
       - run:
           command: |
-            bash .circleci/install_ci_deps.sh
+            sudo bash .circleci/install_ci_deps.sh
             cd auto-deployment/terraform-state
             terraform init; terraform plan
             cd ../infrastructure
