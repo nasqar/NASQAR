@@ -37,8 +37,6 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
   terraform_plan:
-    docker:
-      - image: circleci/python:3.6.1
     steps:
       - run:
           command: |
