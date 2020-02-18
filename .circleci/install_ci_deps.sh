@@ -7,7 +7,7 @@ KUBECTL_VERSION=1.17.0
 
 # add dependencies to install cloud tools
 apt-get update -y
-apt-get install -y curl openssl jq
+apt-get install -y curl openssl
 
 cd /tmp
 
