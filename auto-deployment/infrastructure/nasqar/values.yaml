@@ -1,0 +1,96 @@
+# Default values for nasqar.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+#cert-manager:
+#  ingressShim:
+#    defaultIssuerName: letsencrypt-production
+#    defaultIssuerKind: ClusterIssuer
+#
+#clusterissuer:
+#  email: jdr400@nyu.edu
+
+image:
+#  repository:  "aymanm/seuratv3wizard"
+  repository:  "aymanm/nasqarall"
+  tag: "nasqar"
+  pullPolicy: Always
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  hosts:
+    - host: www.nasqar.com
+      paths:
+        - "/"
+    - host: a3ad5e7c9472411ea9c291227e627f4d-1476379825.us-east-1.elb.amazonaws.com
+      paths:
+        - "/"
+  tls: []
+#    - secretName: nasqar-cert
+#      hosts:
+#        - www.nasqar.com
+
+efsProvisioner:
+  dnsName: "my-custom-efs-dns.com"
+  efsFileSystemId: fs-12345678
+  awsRegion: us-east-1
+  path: /
+  provisionerName: example.com/aws-efs
+  storageClass:
+    name: efs
+    isDefault: false
+    gidAllocate:
+      enabled: true
+      gidMin: 40000
+      gidMax: 50000
+    reclaimPolicy: Delete
+    mountOptions: []
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
