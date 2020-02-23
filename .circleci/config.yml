@@ -36,7 +36,7 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
-  terraform_plan:
+  terraform_apply:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -45,16 +45,15 @@ jobs:
           command: |
             sudo bash .circleci/install_ci_deps.sh
             cd auto-deployment/terraform-state
-            terraform init; terraform plan
+            terraform init; terraform apply
             cd ../infrastructure
-            terraform init; terraform plan
+            terraform init; terraform apply
 
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build
-      - terraform_plan
       - push:
           requires:
             - build
@@ -67,3 +66,9 @@ workflows:
           filters:
             branches:
               only: master
+      - terraform_apply
+        requires:
+          - build
+        filters:
+          branches:
+            only: push_with_tags
