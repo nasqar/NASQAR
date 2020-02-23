@@ -66,9 +66,9 @@ workflows:
           filters:
             branches:
               only: master
-      - terraform_apply
-        requires:
-          - build
-        filters:
-          branches:
-            only: push_with_tags
+      - terraform_apply:
+          requires:
+            - build
+          filters:
+            branches:
+              only: push_with_tags
