@@ -16,7 +16,7 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
   push:
-    executor: docker/machine
+    executor: docker/docker
     steps:
       - setup_remote_docker
       - docker/push:
@@ -26,7 +26,7 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
   push_with_tags:
-    executor: docker/machine
+    executor: docker/docker
     steps:
       - setup_remote_docker
       - docker/push:
@@ -36,6 +36,18 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
+  terraform_apply:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run:
+          command: |
+            sudo bash .circleci/install_ci_deps.sh
+            cd auto-deployment/terraform-state
+            terraform init; terraform apply
+            cd ../infrastructure
+            terraform init; terraform apply
 
 
 workflows:
@@ -55,3 +67,9 @@ workflows:
           filters:
             branches:
               only: master
+      - terraform_apply:
+          requires:
+            - build
+          filters:
+            branches:
+              only: push_with_tags
