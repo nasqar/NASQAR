@@ -7,7 +7,7 @@ orbs:
 jobs:
   # Build the docker image for nasqar
   build:
-    executor: docker/docker
+    executor: docker/machine
     steps:
       - checkout
       - docker/build:
