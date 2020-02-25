@@ -26,9 +26,6 @@ jobs:
       - docker/push:
           digest-path: /tmp/digest.txt
           image: aymanm/nasqarall
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
   push_with_tags:
     executor: docker/docker
     steps:
@@ -37,13 +34,14 @@ jobs:
       - docker/check
       - docker/build:
           image: aymanm/nasqarall
+      - run:
+          command: |
+            docker tag aymanm/nasqarall aymanm/nasqarall:latest
+            docker tag aymanm/nasqarall aymanm/nasqarall:nasqarall
       - docker/push:
           digest-path: /tmp/digest.txt
           image: aymanm/nasqarall
           tag: 'latest,nasqarall'
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
   terraform_apply:
     machine:
       image: ubuntu-1604:201903-01
