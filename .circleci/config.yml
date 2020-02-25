@@ -36,12 +36,12 @@ jobs:
           image: aymanm/nasqarall
       - run:
           command: |
-            docker tag aymanm/nasqarall aymanm/nasqarall:latest
-            docker tag aymanm/nasqarall aymanm/nasqarall:nasqarall
-      - docker/push:
-          digest-path: /tmp/digest.txt
-          image: aymanm/nasqarall
-          tag: 'latest,nasqarall'
+            cd project
+            docker build . -t nasqarall
+            docker tag nasqarall aymanm/nasqarall:latest
+            docker tag nasqarall aymanm/nasqarall:nasqarall
+            docker push aymanm/nasqarall:latest
+            docker push aymanm/nasqarall:nasqarall
   terraform_apply:
     machine:
       image: ubuntu-1604:201903-01
