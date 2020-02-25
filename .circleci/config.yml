@@ -36,7 +36,7 @@ jobs:
           image: aymanm/nasqarall
       - run:
           command: |
-            cd project
+            cd $HOME/project
             docker build . -t nasqarall
             docker tag nasqarall aymanm/nasqarall:latest
             docker tag nasqarall aymanm/nasqarall:nasqarall
