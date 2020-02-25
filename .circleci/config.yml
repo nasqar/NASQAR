@@ -20,6 +20,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - docker/check
       - docker/build:
           image: aymanm/nasqarall
       - docker/push:
@@ -33,6 +34,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - docker/check
       - docker/build:
           image: aymanm/nasqarall
       - docker/push:
