@@ -291,7 +291,7 @@ resource "null_resource" "nasqar_upgrade" {
     always_run = timestamp()
   }
   provisioner "local-exec" {
-    command = "helm upgrade --install nasqar nasqar --set efsProvisioner.efsFileSystemId=$ID --set efsProvisioner.path=/ --set efsProvisioner.awsRegion=$REGION --set efsProvisioner.dnsName=$DNSNAME"
+    command = "helm upgrade --install nasqar nasqar --set image.tag=$CIRCLE_SHA1 --set efsProvisioner.efsFileSystemId=$ID --set efsProvisioner.path=/ --set efsProvisioner.awsRegion=$REGION --set efsProvisioner.dnsName=$DNSNAME"
     environment = {
       ID = aws_efs_file_system.nasqar.id
       REGION = data.aws_region.current.id
