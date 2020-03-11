@@ -1,5 +1,5 @@
 ![alt text](nasqar_bar.png "NASQAR")
-
+ 
 ## NASQAR (Nucleic Acid SeQuence Analysis Resource): 
 ### A web-based platform for High-throughput sequencing data analysis and visualization
 - Pre-print: [NASQAR: A web-based platform for High-throughput sequencing data analysis and visualization](https://doi.org/10.1101/709980)
