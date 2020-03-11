@@ -218,6 +218,9 @@ resource "null_resource" "kubectl_update" {
     aws_efs_file_system.nasqar,
     aws_efs_mount_target.main
   ]
+  triggers = {
+    always_run = timestamp()
+  }
   provisioner "local-exec" {
     command = "aws eks --region $AWS_REGION update-kubeconfig --name $NAME"
     environment = {
@@ -230,6 +233,7 @@ resource "null_resource" "kubectl_update" {
 resource "null_resource" "nasqar_dependency_update" {
   depends_on = [
     module.eks,
+    null_resource.kubectl_update,
     kubernetes_secret.main,
     aws_efs_file_system.nasqar,
     aws_efs_mount_target.main
@@ -279,6 +283,7 @@ resource "null_resource" "nasqar_dependency_update" {
 
 resource "null_resource" "nasqar_upgrade" {
   depends_on = [
+    null_resource.kubectl_update,
     null_resource.nasqar_dependency_update,
   ]
 
