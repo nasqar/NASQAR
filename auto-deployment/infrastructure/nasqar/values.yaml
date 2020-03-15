@@ -15,7 +15,7 @@ replicaCount: 1
 image:
 #  repository:  "aymanm/seuratv3wizard"
   repository:  "aymanm/nasqarall"
-  tag: "nasqar"
+  tag: "latest"
   pullPolicy: Always
 
 imagePullSecrets: []
