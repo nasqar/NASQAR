@@ -1,0 +1,7 @@
+HTTP/2.0 200 OK
+Content-Length: 468
+Audit-Id: 45f3d4e9-618e-402f-bf38-279d50bca6e7
+Content-Type: application/json
+Date: Thu, 26 Mar 2020 07:46:06 GMT
+
+{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"autoscaling/v1","resources":[{"name":"horizontalpodautoscalers","singularName":"","namespaced":true,"kind":"HorizontalPodAutoscaler","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["hpa"],"categories":["all"]},{"name":"horizontalpodautoscalers/status","singularName":"","namespaced":true,"kind":"HorizontalPodAutoscaler","verbs":["get","patch","update"]}]}

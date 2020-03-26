@@ -27,3 +27,8 @@ output "aws_kubeconfig_command" {
   description = "AWS cli command to get kubeconfig"
   value = "aws eks --region ${data.aws_region.current.name} update-kubeconfig --name ${var.prefix}"
 }
+
+output "helm_upgrade_command" {
+  description = "run helm upgrade"
+  value = "helm upgrade --install nasqar nasqar  --set image.tag=$CIRCLE_SHA1 --set efsProvisioner.efsFileSystemId=${aws_efs_file_system.nasqar.id} --set efsProvisioner.path=/ --set efsProvisioner.awsRegion=$REGION --set efsProvisioner.dnsName=${aws_efs_file_system.nasqar.dns_name}"
+}

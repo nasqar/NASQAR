@@ -1,0 +1,7 @@
+HTTP/2.0 200 OK
+Content-Length: 152
+Audit-Id: 2a7d6712-fa19-4d42-945d-8cc436de3ec8
+Content-Type: application/json
+Date: Thu, 26 Mar 2020 07:46:05 GMT
+
+{"kind":"APIVersions","versions":["v1"],"serverAddressByClientCIDRs":[{"clientCIDR":"0.0.0.0/0","serverAddress":"ip-172-16-111-250.ec2.internal:443"}]}

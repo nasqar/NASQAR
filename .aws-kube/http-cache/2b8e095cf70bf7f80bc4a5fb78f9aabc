@@ -1,0 +1,7 @@
+HTTP/2.0 200 OK
+Content-Length: 272
+Audit-Id: e7394f36-b97f-4b34-9510-a66936d25713
+Content-Type: application/json
+Date: Thu, 26 Mar 2020 07:46:06 GMT
+
+{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"events.k8s.io/v1beta1","resources":[{"name":"events","singularName":"","namespaced":true,"kind":"Event","verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"shortNames":["ev"]}]}
