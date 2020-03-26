@@ -1,7 +1,0 @@
-HTTP/2.0 200 OK
-Content-Length: 258
-Audit-Id: 51dd9120-ad20-4460-b635-a228e3bcf027
-Content-Type: application/json
-Date: Thu, 26 Mar 2020 07:46:06 GMT
-
-{"kind":"APIResourceList","apiVersion":"v1","groupVersion":"coordination.k8s.io/v1beta1","resources":[{"name":"leases","singularName":"","namespaced":true,"kind":"Lease","verbs":["create","delete","deletecollection","get","list","patch","update","watch"]}]}
