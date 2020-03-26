@@ -30,3 +30,4 @@ curl -o aws-iam-authenticator \
 chmod +x ./aws-iam-authenticator
 
 mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+
