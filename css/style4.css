@@ -356,6 +356,11 @@ figcaption p {
     border-color: #e9f7f5;
 }
 
+.epid-color { 
+    background-color: #f9afaf40; 
+    border-color: #f9afaf40;
+}
+
 .other-color { 
     background-color: #efe9f7;
     border-color: #efe9f7;
