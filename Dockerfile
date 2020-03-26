@@ -66,7 +66,6 @@ RUN R -e "devtools::install_github('nasqar/SeuratWizard')"
 #RUN R -e "devtools::install_version(package = 'Seurat', version = package_version('2.3.4'), upgrade='never',repos='https://cloud.r-project.org')"
 RUN apt-get update && apt-get install -y libpython-dev python-pip
 RUN R -e "source('https://z.umn.edu/archived-seurat')"
-RUN ls
 RUN R -e "devtools::install_github('nasqar/seuratv3wizard', upgrade_dependencies = FALSE,ref = 'nasqarfix',repos=NULL)"
 RUN R -e "devtools::install_github(lib='/usr/local/lib/R/site-library/SeuratV3Wizard/shiny/SeuratLib',repo = 'satijalab/seurat', force=T)"
 RUN R -e "devtools::install_github(repo = 'ChristophH/sctransform',repos=NULL)"
@@ -82,17 +81,24 @@ RUN R -e "devtools::install_github('daattali/shinycssloaders')"
 RUN R -e "BiocManager::install(c('DESeq2'))"
 RUN R -e "install.packages('ggupset')"
 RUN R -e "BiocManager::install('sva')"
-RUN ls
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
 
+#covid19
+RUN R -e "install.packages(c('tidyverse','lubridate','rvest','leaflet','countrycode'))"
+RUN mkdir /srv/shiny-server/covid19app
+RUN cd /srv/shiny-server/covid19app && wget https://raw.githubusercontent.com/ulfelder/practice-projects/master/covid19/app.R
+RUN apt-get -y install libudunits2-dev libgdal-dev
+RUN R -e "devtools::install_github('RamiKrispin/coronavirus')"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/RamiKrispin/coronavirus_dashboard/archive/master.zip', destfile = 'cdashboard.zip'); unzip(zipfile = 'cdashboard.zip')"
+RUN R -e "install.packages('leafpop')"
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
 COPY . /srv/shiny-server
+
 # Copy further configuration files into the Docker image
 COPY docker_files/shiny-server.sh /usr/bin/shiny-server.sh
 COPY docker_files/sitemap.xml /srv/shiny-server/
-RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/ClusterProfShinyGSEA/archive/master.zip', destfile = 'clustprofgsea.zip'); unzip(zipfile = 'clustprofgsea.zip')"
 
 RUN mv /tmp/DEApp-master /srv/shiny-server/DEApp
 RUN mv /tmp/GeneCountMerger-master /srv/shiny-server/GeneCountMerger
@@ -101,6 +107,7 @@ RUN mv /tmp/shaman-master /srv/shiny-server/shaman
 RUN mv /tmp/STARTapp-master /srv/shiny-server/STARTapp
 RUN mv /tmp/ClusterProfShinyGSEA-master /srv/shiny-server/ClusterProfShinyGSEA
 RUN mv /tmp/ClusterProfShinyORA-master /srv/shiny-server/ClusterProfShinyORA
+RUN mv /tmp/coronavirus_dashboard-master /srv/shiny-server/coronavirus_dashboard
 
 RUN sed -i '/options(repos = BiocInstaller::biocinstallRepos())/d' /srv/shiny-server/STARTapp/server.R
 RUN chown -R shiny:shiny /srv/shiny-server
