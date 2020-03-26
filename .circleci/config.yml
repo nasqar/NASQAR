@@ -18,24 +18,30 @@ jobs:
   push:
     executor: docker/docker
     steps:
+      - checkout
       - setup_remote_docker
+      - docker/check
+      - docker/build:
+          image: aymanm/nasqarall
       - docker/push:
           digest-path: /tmp/digest.txt
           image: aymanm/nasqarall
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
   push_with_tags:
     executor: docker/docker
     steps:
+      - checkout
       - setup_remote_docker
-      - docker/push:
-          digest-path: /tmp/digest.txt
+      - docker/check
+      - docker/build:
           image: aymanm/nasqarall
-          tag: 'latest,nasqarall'
       - run:
           command: |
-            echo "Digest is: $(</tmp/digest.txt)"
+            cd $HOME/project
+            docker build . -t nasqarall
+            docker tag nasqarall aymanm/nasqarall:latest
+            docker tag nasqarall aymanm/nasqarall:nasqarall
+            docker push aymanm/nasqarall:latest
+            docker push aymanm/nasqarall:nasqarall
   terraform_apply:
     machine:
       image: ubuntu-1604:201903-01
@@ -45,31 +51,30 @@ jobs:
           command: |
             sudo bash .circleci/install_ci_deps.sh
             cd auto-deployment/terraform-state
-            terraform init; terraform apply
+            terraform init; terraform apply -lock=false -auto-approve
             cd ../infrastructure
-            terraform init; terraform apply
+            terraform init; terraform apply -lock=false -auto-approve
 
 
 workflows:
   version: 2
   build-deploy:
     jobs:
-      - build
+      - build:
+        filters:
+          branches:
+            ignore: master
       - push:
-          requires:
-            - build
           filters:
             branches:
               only: master
       - push_with_tags:
-          requires:
-            - build
           filters:
             branches:
               only: master
       - terraform_apply:
           requires:
-            - build
+            - push_with_tags
           filters:
             branches:
-              only: push_with_tags
+              only: master

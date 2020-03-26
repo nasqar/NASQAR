@@ -24,3 +24,9 @@ chmod +x /usr/local/bin/kubectl
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
 chmod 700 get_helm.sh
 ./get_helm.sh
+
+curl -o aws-iam-authenticator \
+    https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator
+chmod +x ./aws-iam-authenticator
+
+mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
