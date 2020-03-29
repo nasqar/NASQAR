@@ -51,18 +51,10 @@ jobs:
           command: |
             sudo bash .circleci/install_ci_deps.sh
             cd auto-deployment/terraform-state
+            terraform force-unlock 1541165b-f564-2414-f91b-2afaa7f12562
             terraform init; terraform refresh; terraform apply -auto-approve -lock=false
-            cd ../infrastructure
-            terraform init; terraform refresh; terraform apply  -auto-approve -lock=false
-      - run:
-          command: |
-            sudo bash .circleci/install_ci_deps.sh
-            cd auto-deployment/terraform-state
-            terraform init; terraform refresh; terraform apply -auto-approve -lock=false
-            cd ../infrastructure
-            terraform init; terraform refresh; terraform apply -auto-approve -lock=false
-          when: on_fail
-
+#            cd ../infrastructure
+#            terraform init; terraform refresh; terraform apply  -auto-approve -lock=false
 
 workflows:
   version: 2
