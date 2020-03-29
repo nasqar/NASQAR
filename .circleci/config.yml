@@ -50,19 +50,12 @@ jobs:
       - run:
           command: |
             sudo bash .circleci/install_ci_deps.sh
-            cd auto-deployment/terraform-state
-            terraform init; terraform refresh -lock=false; terraform apply -auto-approve -lock=false
-            cd ../infrastructure
-            terraform init; terraform refresh -lock=false; terraform apply  -auto-approve -lock=false
-      - run:
-          command: |
-            sudo bash .circleci/install_ci_deps.sh
-            cd auto-deployment/terraform-state
-            terraform init; terraform refresh -lock=false; terraform apply -auto-approve -lock=false
-            cd ../infrastructure
-            terraform init; terraform refresh -lock=false; terraform apply -auto-approve -lock=false
-          when: on_fail
-
+            mkdir -p auto-deployment/output
+            cd auto-deployment/infrastructure
+            terraform init -input=false
+            terraform refresh -lock=false || echo "unable to refresh"
+            terraform plan -input=false -out=../outputs/tfplan
+            terraform apply -input=false ../outputs/tfplan
 
 workflows:
   version: 2

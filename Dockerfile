@@ -88,9 +88,13 @@ RUN R -e "install.packages(c('tidyverse','lubridate','rvest','leaflet','countryc
 RUN mkdir /srv/shiny-server/covid19app
 RUN cd /srv/shiny-server/covid19app && wget https://raw.githubusercontent.com/ulfelder/practice-projects/master/covid19/app.R
 RUN apt-get -y install libudunits2-dev libgdal-dev
-RUN R -e "devtools::install_github('RamiKrispin/coronavirus')"
+RUN R -e "devtools::install_github('RamiKrispin/coronavirus@11a9450cdb415889e179e77badec7f588899ea05')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/RamiKrispin/coronavirus_dashboard/archive/master.zip', destfile = 'cdashboard.zip'); unzip(zipfile = 'cdashboard.zip')"
-RUN R -e "install.packages('leafpop')"
+RUN R -e "install.packages(c('leafpop','patchwork'))"
+RUN apt-get -y install git
+RUN rm -rf /srv/shiny-server/covid19app && git clone https://github.com/ulfelder/practice-projects.git /tmp/covid19
+RUN cp -rf /tmp/covid19/covid19 /srv/shiny-server/covid19app
+
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
