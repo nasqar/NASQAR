@@ -92,7 +92,7 @@ RUN R -e "install.packages(c('leafpop','patchwork'))"
 RUN apt-get -y install git
 RUN git clone https://github.com/ulfelder/practice-projects.git /tmp/covid19
 RUN cp -rf /tmp/covid19/covid19 /srv/shiny-server/covid19app
-
+RUN R -e "install.packages('NMF')"
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
