@@ -50,7 +50,7 @@ jobs:
       - run:
           command: |
             sudo bash .circleci/install_ci_deps.sh
-            mkdir -p auto-deployment/output
+            mkdir -p auto-deployment/outputs
             cd auto-deployment/infrastructure
             terraform init -input=false
             terraform refresh -lock=false || echo "unable to refresh"
