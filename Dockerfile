@@ -73,7 +73,6 @@ RUN pip install cellbrowser
 RUN pip install umap-learn
 
 # fix datatables issue by downgrading shiny and htmltools
-#RUN R -e "install.packages('janitor')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/GeneCountMerger/archive/master.zip', destfile = 'genecountmerger.zip'); unzip(zipfile = 'genecountmerger.zip')"
 RUN R -e "devtools::install_github('rstudio/htmltools')"
 RUN R -e "devtools::install_github('rstudio/shiny')"
@@ -81,7 +80,6 @@ RUN R -e "devtools::install_github('daattali/shinycssloaders')"
 RUN R -e "BiocManager::install(c('DESeq2'))"
 RUN R -e "install.packages('ggupset')"
 RUN R -e "BiocManager::install('sva')"
-RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
 
 #covid19
 RUN R -e "install.packages(c('tidyverse','lubridate','rvest','leaflet','countrycode'))"
@@ -93,6 +91,9 @@ RUN apt-get -y install git
 RUN git clone https://github.com/ulfelder/practice-projects.git /tmp/covid19
 RUN cp -rf /tmp/covid19/covid19 /srv/shiny-server/covid19app
 RUN R -e "install.packages('NMF')"
+
+RUN R -e "install.packages('janitor')"
+RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
