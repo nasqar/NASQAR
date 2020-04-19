@@ -92,8 +92,8 @@ RUN git clone https://github.com/ulfelder/practice-projects.git /tmp/covid19
 RUN cp -rf /tmp/covid19/covid19 /srv/shiny-server/covid19app
 RUN R -e "install.packages('NMF')"
 
-RUN R -e "install.packages('janitor')"
 RUN R -e "setwd(dir = '/tmp/'); download.file(url = 'https://github.com/nasqar/deseq2shiny/archive/master.zip', destfile = 'deseq2shiny.zip'); unzip(zipfile = 'deseq2shiny.zip')"
+RUN R -e "install.packages('janitor')"
 
 # Copy configuration files into the Docker image
 COPY docker_files/shiny-server.conf  /etc/shiny-server/shiny-server.conf
