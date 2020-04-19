@@ -16,13 +16,13 @@ ui <- tagList(
     tabPanel("", 
              fluidRow(column(4,wellPanel(
                h4("Upload all FPKM files"),
-               h4("(select multiple .CSV)"),
+               h4("(select at least 2 csv files)"),
                fileInput('datafile', '',
                          accept=c('text/csv', 
                                   'text/comma-separated-values,text/plain', 
                                   '.csv'),multiple = TRUE
                ),
-               checkboxInput("addOne", "Add +1 to counts (pseudo counts)", FALSE),
+               #checkboxInput("addOne", "Add +1 to counts (pseudo counts)", FALSE),
                checkboxInput("fpkmToTpm", "Convert to TPMs", FALSE),
                checkboxInput("addGeneNames", "Retrieve gene names from ensembl ids", FALSE),
                conditionalPanel("input.addGeneNames",
@@ -44,8 +44,84 @@ ui <- tagList(
                                 downloadLink('downloadData', 'Download Merged File',class = "btn btn-primary", style="color: #fff; background-color: #9E0000; border-color: #9E0000"))
              )
              ),#column
-             column(8,h2("Merged Table"),hr(),
-                    dataTableOutput("contents")
+             column(8,
+                    conditionalPanel("output.filesMerged",
+                                     h2("Merged Table"),
+                                     hr(),
+                                     dataTableOutput("contents")
+                                     ),
+                    conditionalPanel("!output.filesMerged",
+                                     h2("User Guide"),
+                                     hr(),
+                                     h4(strong("1) Introduction:")),
+                                     wellPanel(
+                                       
+                                       p("This is a simple preprocessing tool to merge individual gene FPKM files (Eg. fpkm files from cufflinks)"),
+                                       p(strong("NOTE:"),"first column must contain the genes. If the gene columns do not match in all files, this tool will not work"),
+                                       hr(),
+                                       h5(strong("Features")),
+                                       tags$ul(
+                                         tags$li("Merge individual gene FPKM files. See ",strong("Sample Input Files")," below for more details"),
+                                         tags$li("Or merge", strong(" multiple matrices")),
+                                         tags$li(strong("Convert ensembl gene IDs to gene names"),
+                                                 tags$ul(
+                                                   tags$li("Option to choose from available genome/versions")
+                                                   
+                                                 )
+                                         ), 
+                                         tags$li("Option to convert FPKMs to ", strong("TPMs")),
+                                         tags$li(strong("Download")," merged FPKMs file in .csv format")
+                                       )
+                                     ),
+                                     hr(),
+                                     #wellPanel(
+                                     h4(strong("2) Sample Input Files:")),
+                                     tags$div(class = "BoxArea2",
+                                              fluidRow(
+                                                column(12,
+                                                       p(strong("Select multiple files to upload, E.g. Input files:")),
+                                                       column(5,
+                                                              p(strong(tags$em("File 1 of 8: ")), "Sample_S2L_gene_fpkms.txt"),
+                                                              tags$img(src = "inputFiles.png", width = "400px", height = "100px")),
+                                                       column(5,
+                                                              p(strong(tags$em("File 2 of 8: ")), "Sample_S2V_gene_fpkms.txt"),
+                                                              tags$img(src = "inputFiles.png", width = "400px", height = "100px")),
+                                                       column(2,
+                                                              p(strong("etc ...")))
+                                                       
+                                                ),
+                                                div(style = "clear:both;")
+                                              ),
+                                              
+                                              fluidRow(
+                                                column(12,
+                                                       p(""),
+                                                       p(strong("Note: "),'File names will be used as sample (column) names in output table. You can edit the column names after merging'))
+                                              )
+                                              
+                                     ),
+                                     column(12,hr()),
+                                     h4(strong("3) Sample Output File:")),
+                                     div(style = "clear:both;"),
+                                     tags$div(class = "BoxArea2",
+                                              p(strong("Output depending on options selected:")),
+                                              column(12,
+                                                     p(strong(em("A) Without renaming/converting genes (Default)"))),
+                                                     tags$img(src = "output_geneids.png", width = "400px", height = "100px")),
+                                              column(12,
+                                                     hr()),
+                                              column(6,
+                                                     p(strong(em("B) Retrieve gene names (replace), E.g. output file"))),
+                                                     tags$img(src = "output_genenames.png", width = "400px", height = "100px")),
+                                              column(6,
+                                                     p(strong(em("C) Retrieve gene names (add), E.g. output file"))),
+                                                     tags$img(src = "output_both.png", width = "400px", height = "100px")),
+                                              div(style = "clear:both;")
+                                     )
+                                     
+                                     
+                    )
+                    
              )#column
              )#fluidrow
     ),#tabpanel
@@ -74,6 +150,11 @@ server <- function(input, output,session) {
     tmp <- dataReactive()
     if(!is.null(tmp)) tmp$data
   })
+  
+  output$filesMerged <- reactive({
+    return(!is.null(dataReactive()))
+  })
+  outputOptions(output, 'filesMerged', suspendWhenHidden=FALSE)
   
   output$downloadData <- downloadHandler(
     filename = function() {
@@ -215,9 +296,9 @@ server <- function(input, output,session) {
                         
                     }
                     
-                    if(input$addOne)
-                      total[,!(names(total) %in% c("gene.ids","gene.names"))] = total[,!(names(total) %in% c("gene.ids","gene.names"))] + 1
-                    
+                    # if(input$addOne)
+                    #   total[,!(names(total) %in% c("gene.ids","gene.names"))] = total[,!(names(total) %in% c("gene.ids","gene.names"))] + 1
+                    # 
                     
                     
                     return(list('data'=total))
